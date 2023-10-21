@@ -25,6 +25,7 @@ Didn't support other part of the config yet (SFTP / postgres) since I am just di
 
 ## Systemd Config
 
+Startup can be automated through Systemd + [Podman Quadlet](https://www.redhat.com/sysadmin/quadlet-podman)
 Requirement: Podman 4.4 (it include Quadlet)
 
 from [Deploying a multi-container application using Podman and Quadlet](https://www.redhat.com/sysadmin/multi-container-application-podman-quadlet)
