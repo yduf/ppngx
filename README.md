@@ -17,9 +17,9 @@ Rather than executing start.sh, use Kubernetes.yml to describe pod setup.
 2.  Wait a bit and make sure <http://localhost:8000> is loading paperless.
 3. Add a superuser to paperless-ngx with:
 
-  ```bash
-  podman exec -it paperless-paperless-webserver python manage.py createsuperuser
-  ```
+```bash
+$ podman exec -it paperless-paperless-webserver python manage.py createsuperuser
+```
 
 Didn't support other part of the config yet (SFTP / postgres) since I am just discoverint Paperless-ngx.
 
@@ -29,13 +29,13 @@ Requirement: Podman 4.4 (it include Quadlet)
 
 from [Deploying a multi-container application using Podman and Quadlet](https://www.redhat.com/sysadmin/multi-container-application-podman-quadlet)
 
-{% highlight bash %}
+```bash
 # The place where we will store the definition
 $ mkdir -p $HOME/.config/containers/systemd/
-{% endhighlight %}
+```
 
 **paperless.kube** stored in `$HOME/.config/containers/systemd/`
-{% highlight ini %}
+```ini
 [Install]
 WantedBy=default.target
 
@@ -44,13 +44,13 @@ WantedBy=default.target
 Yaml=/mnt/paperless/paperless.yaml
 # Publish the envoy proxy data port => this has to match otherwise service won't start
 PublishPort=8000:8000
-{% endhighlight %}
+```
 
-{% highlight bash %}
+```bash
 # to start pod
 $ systemctl --user daemon-reload
 $ systemctl --user start paperless.service
-{% endhighlight %}
+```
 
 
 ### see MIT License applying to start.sh
