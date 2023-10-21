@@ -23,5 +23,35 @@ Rather than executing start.sh, use Kubernetes.yml to describe pod setup.
 
 Didn't support other part of the config yet (SFTP / postgres) since I am just discoverint Paperless-ngx.
 
-# see MIT License applying to start.sh
+## Systemd Config
+
+Requirement: Podman 4.4 (it include Quadlet)
+
+from [Deploying a multi-container application using Podman and Quadlet](https://www.redhat.com/sysadmin/multi-container-application-podman-quadlet)
+
+{% highlight bash %}
+# The place where we will store the definition
+$ mkdir -p $HOME/.config/containers/systemd/
+{% endhighlight %}
+
+**paperless.kube** stored in `$HOME/.config/containers/systemd/`
+{% highlight ini %}
+[Install]
+WantedBy=default.target
+
+[Kube]
+# Point to the yaml file in the same directory
+Yaml=/mnt/paperless/paperless.yaml
+# Publish the envoy proxy data port => this has to match otherwise service won't start
+PublishPort=8000:8000
+{% endhighlight %}
+
+{% highlight bash %}
+# to start pod
+$ systemctl --user daemon-reload
+$ systemctl --user start paperless.service
+{% endhighlight %}
+
+
+### see MIT License applying to start.sh
 

@@ -8,21 +8,16 @@ metadata:
   name: paperless
   labels:
     app: paperless
-  annotations:
-    bind-mount-options:/home/yves/app/ppngx/export: Z
+  #annotations:
+  #  bind-mount-options:/home/yves/app/ppngx/export: Z
 
 spec:
   containers:
   # in-memory data store used by millions of developers as a database, cache, streaming engine, and message broker. 
   # https://redis.io/ - 
   # [This is required for processing scheduled tasks such as email fetching, index optimization and for training the automatic document matcher.](https://docs.paperless-ngx.com/configuration/#redis-broker)
-  - name: paperless-redis
+  - name: redis
     image: docker.io/library/redis:7
-    ports:
-    - containerPort: 2022
-      hostPort: 2022
-    - containerPort: 8022
-      hostPort: 8022
     volumeMounts:
     - mountPath: /data
       name: paperless-redis-pvc
@@ -36,7 +31,7 @@ spec:
 
   # Gotenberg provides a developer-friendly API to interact with powerful tools like Chromium and LibreOffice for converting numerous document formats (HTML, Markdown, Word, Excel, etc.) into PDF files, and more!
   # https://gotenberg.dev/
-  - name: paperless-gotenberg
+  - name: gotenberg
     image: docker.io/gotenberg/gotenberg:7.8
     # The gotenberg chromium route is used to convert .eml files. We do not
     # want to allow external content like tracking pixels or even javascript.
@@ -44,7 +39,7 @@ spec:
   
   # toolkit detects and extracts metadata and text from over a thousand different file types (such as PPT, XLS, and PDF).
   # https://tika.apache.org/
-  - name: paperless-tika
+  - name: tika
     image: docker.io/apache/tika:latest
 
   # 
@@ -57,7 +52,7 @@ spec:
   #     name: paperless-consume-pvc
 
   # The application
-  - name: paperless-webserver
+  - name: webserver
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     args:
     - /usr/local/bin/paperless_cmd.sh
@@ -108,19 +103,19 @@ spec:
   # Paperless
   - name: paperless-data
     hostPath:
-      path: /home/yves/Documents/paperless-ngx/data
+      path: /mnt/paperless/data
       type: DirectoryOrCreate
   - name: paperless-media
     hostPath:
-      path: /home/yves/Documents/paperless-ngx/media
+      path: /mnt/paperless/media
       type: DirectoryOrCreate
   - name: home-yves-app-ppngx-export-host-0
     hostPath:
-      path: /home/yves/Documents/paperless-ngx/export
+      path: /mnt/paperless/export
       type: DirectoryOrCreate
   - name: paperless-consume
     hostPath:
-      path: /home/yves/Documents/paperless-ngx/consume
+      path: /mnt/paperless/consume
       type: DirectoryOrCreate
   # - name: paperless-sftpgo-pvc
   #   persistentVolumeClaim:
