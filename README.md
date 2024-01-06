@@ -18,7 +18,8 @@ Rather than executing start.sh, use Kubernetes.yml to describe pod setup.
 3. Add a superuser to paperless-ngx with:
 
 ```bash
-$ podman exec -it paperless-paperless-webserver python manage.py createsuperuser
+$ podman exec -it paperless-webserver python manage.py migrate
+$ podman exec -it paperless-webserver python manage.py createsuperuser
 ```
 
 Didn't support other part of the config yet (SFTP / postgres) since I am just discoverint Paperless-ngx.
