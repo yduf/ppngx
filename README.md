@@ -35,7 +35,7 @@ $ podman exec -it paperless-webserver python manage.py createsuperuser
 Didn't support other part of the config yet (SFTP / postgres) since I am just discoverint Paperless-ngx.
 
 **Note: Tearing down**  
-When adjusting the yaml, you have to teardown the pod first, since does not automatically reconcile updates in the YAML spec with running containers, so do:
+When adjusting the yaml, you have to teardown the pod first, since podman does not automatically reconcile updates in the YAML spec with running containers, so do:
 ```bash
 $ podman pod rm paperless -f
 # and then again
