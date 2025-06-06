@@ -78,6 +78,11 @@ $ systemctl --user daemon-reload
 $ systemctl --user start paperless.service
 ```
 
+ <span style="color:green">●</span>  After a while everything should be green
+```bash
+$ systemctl --user status 
+```
+
 
 ### see MIT License applying to start.sh
 
